@@ -1,0 +1,1 @@
+<!-- Sidebar removed — full-width layout -->
