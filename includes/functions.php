@@ -3,24 +3,26 @@
 // Holds the last database error for debugging
 $GLOBALS['LAST_DB_ERROR'] = null;
 
-function dbConnect() {
+function dbConnect()
+{
     $host = 'localhost';
     $db_name = 'u934543595_living360';
     $username = 'u934543595_living360';
     $password = 'Living@360@#';
-    
+
     try {
         $conn = new PDO("mysql:host={$host};dbname={$db_name};charset=utf8mb4", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
-    } catch(PDOException $exception) {
+    } catch (PDOException $exception) {
         $GLOBALS['LAST_DB_ERROR'] = $exception->getMessage();
         error_log('DB connection error: ' . $exception->getMessage());
     }
 }
 
 // Get setting value
-function getSetting($key) {
+function getSetting($key)
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT setting_value FROM settings WHERE setting_key = :key");
     $stmt->bindParam(':key', $key);
@@ -30,7 +32,8 @@ function getSetting($key) {
 }
 
 // Get active services
-function getActiveServices() {
+function getActiveServices()
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT * FROM services WHERE status = 1 ORDER BY id ASC");
     $stmt->execute();
@@ -38,7 +41,8 @@ function getActiveServices() {
 }
 
 // Get service by ID
-function getServiceById($id) {
+function getServiceById($id)
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT * FROM services WHERE id = :id");
     $stmt->bindParam(':id', $id);
@@ -47,23 +51,25 @@ function getServiceById($id) {
 }
 
 // Get active projects
-function getActiveProjects($limit = null) {
+function getActiveProjects($limit = null)
+{
     $conn = dbConnect();
     $query = "SELECT p.*, s.title as service_name FROM projects p 
               JOIN services s ON p.service_id = s.id 
               WHERE p.status = 1 ORDER BY p.id DESC";
-    
+
     if ($limit) {
-        $query .= " LIMIT " . (int)$limit;
+        $query .= " LIMIT " . (int) $limit;
     }
-    
+
     $stmt = $conn->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Get project by ID
-function getProjectById($id) {
+function getProjectById($id)
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT p.*, s.title as service_name FROM projects p 
                            JOIN services s ON p.service_id = s.id 
@@ -74,21 +80,23 @@ function getProjectById($id) {
 }
 
 // Get active blogs
-function getActiveBlogs($limit = null) {
+function getActiveBlogs($limit = null)
+{
     $conn = dbConnect();
     $query = "SELECT * FROM blogs WHERE status = 1 ORDER BY created_at DESC";
-    
+
     if ($limit) {
-        $query .= " LIMIT " . (int)$limit;
+        $query .= " LIMIT " . (int) $limit;
     }
-    
+
     $stmt = $conn->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Get blog by slug
-function getBlogBySlug($slug) {
+function getBlogBySlug($slug)
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT * FROM blogs WHERE slug = :slug");
     $stmt->bindParam(':slug', $slug);
@@ -97,7 +105,8 @@ function getBlogBySlug($slug) {
 }
 
 // Get active offer
-function getActiveOffer() {
+function getActiveOffer()
+{
     $conn = dbConnect();
     $stmt = $conn->prepare("SELECT * FROM offers WHERE active = 1 ORDER BY id DESC LIMIT 1");
     $stmt->execute();
@@ -105,7 +114,8 @@ function getActiveOffer() {
 }
 
 // Create enquiry
-function createEnquiry($data) {
+function createEnquiry($data)
+{
     try {
         $conn = dbConnect();
         // Discover available columns in the enquiries table
@@ -113,25 +123,25 @@ function createEnquiry($data) {
         $available = array_change_key_case(array_flip($columns), CASE_LOWER);
 
         // Coerce optional inputs to NULL when empty
-        $status     = isset($data['status']) ? $data['status'] : 'new';
-        $newsletter = isset($data['newsletter']) ? (int)$data['newsletter'] : 0;
-        $phone      = (isset($data['phone']) && $data['phone'] !== '') ? $data['phone'] : null;
+        $status = isset($data['status']) ? $data['status'] : 'new';
+        $newsletter = isset($data['newsletter']) ? (int) $data['newsletter'] : 0;
+        $phone = (isset($data['phone']) && $data['phone'] !== '') ? $data['phone'] : null;
         $space_size = (isset($data['space_size']) && $data['space_size'] !== '') ? $data['space_size'] : null;
-        $referral   = (isset($data['referral']) && $data['referral'] !== '') ? $data['referral'] : null;
+        $referral = (isset($data['referral']) && $data['referral'] !== '') ? $data['referral'] : null;
 
         // Map of possible fields => value providers
         $fieldValues = [
-            'name'         => $data['name'] ?? null,
-            'email'        => $data['email'] ?? null,
-            'phone'        => $phone,
+            'name' => $data['name'] ?? null,
+            'email' => $data['email'] ?? null,
+            'phone' => $phone,
             'project_type' => $data['project_type'] ?? null,
-            'space_size'   => $space_size,
-            'budget'       => $data['budget'] ?? null,
-            'timeline'     => $data['timeline'] ?? null,
-            'message'      => $data['message'] ?? null,
-            'referral'     => $referral,
-            'newsletter'   => $newsletter,
-            'status'       => $status,
+            'space_size' => $space_size,
+            'budget' => $data['budget'] ?? null,
+            'timeline' => $data['timeline'] ?? null,
+            'message' => $data['message'] ?? null,
+            'referral' => $referral,
+            'newsletter' => $newsletter,
+            'status' => $status,
         ];
 
         $cols = [];
@@ -177,7 +187,7 @@ function createEnquiry($data) {
             if ($bVal === null) {
                 $stmt->bindValue($param, null, PDO::PARAM_NULL);
             } elseif ($bCol === 'newsletter') {
-                $stmt->bindValue($param, (int)$bVal, PDO::PARAM_INT);
+                $stmt->bindValue($param, (int) $bVal, PDO::PARAM_INT);
             } else {
                 $stmt->bindValue($param, $bVal, PDO::PARAM_STR);
             }
@@ -211,7 +221,8 @@ function createEnquiry($data) {
 }
 
 // Get column names for a table from INFORMATION_SCHEMA for the current database
-function getTableColumns(PDO $conn, $tableName) {
+function getTableColumns(PDO $conn, $tableName)
+{
     try {
         $stmt = $conn->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :t");
         $stmt->bindParam(':t', $tableName);
@@ -225,21 +236,55 @@ function getTableColumns(PDO $conn, $tableName) {
 }
 
 // For debugging: get last DB error captured
-function getLastDbError() {
+function getLastDbError()
+{
     return $GLOBALS['LAST_DB_ERROR'] ?? null;
 }
 
-// Send email notification
-function sendEmailNotification($to, $subject, $message) {
-    $headers = "From: design@living360.in\r\n";
-    $headers .= "Reply-To: design@living360.in\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-    return mail($to, $subject, $message, $headers);
+// Send email notification via PHPMailer SMTP
+function sendEmailNotification($to, $subject, $message)
+{
+    // Include PHPMailer classes
+    require_once __DIR__ . '/PHPMailer/Exception.php';
+    require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+    require_once __DIR__ . '/PHPMailer/SMTP.php';
+
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+    try {
+        // SMTP Configuration
+        $mail->isSMTP();
+        $mail->Host = 'smtp.hostinger.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'design@living360.in';
+        $mail->Password = 'Living@360';
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port = 465;
+
+        // Sender and recipient
+        $mail->setFrom('design@living360.in', 'Living 360 Interiors');
+        $mail->addAddress($to);
+        $mail->addReplyTo('design@living360.in', 'Living 360 Interiors');
+
+        // Email content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        $mail->AltBody = strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $message));
+        $mail->CharSet = 'UTF-8';
+
+        $mail->send();
+        return true;
+    } catch (PHPMailer\PHPMailer\Exception $e) {
+        // Log error for debugging (check PHP error log)
+        error_log('PHPMailer Error: ' . $mail->ErrorInfo);
+        return false;
+    }
 }
 
 // Sanitize input
-function sanitizeInput($input) {
+function sanitizeInput($input)
+{
     $input = trim($input);
     $input = stripslashes($input);
     $input = htmlspecialchars($input, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -247,7 +292,8 @@ function sanitizeInput($input) {
 }
 
 // Check if admin is logged in
-function isAdminLoggedIn() {
+function isAdminLoggedIn()
+{
     if (session_status() === PHP_SESSION_NONE) {
         // Attempt to start session if not already started
         @session_start();
@@ -256,7 +302,8 @@ function isAdminLoggedIn() {
 }
 
 // Require admin login (redirects to admin login if not authenticated)
-function requireAdminLogin() {
+function requireAdminLogin()
+{
     if (!isAdminLoggedIn()) {
         // Build path relative to the executing script (e.g., /admin/dashboard.php -> /admin/auth/login.php)
         $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
@@ -267,8 +314,9 @@ function requireAdminLogin() {
 }
 
 // Create URL-friendly slug from text
-function createSlug($text) {
-    $text = trim((string)$text);
+function createSlug($text)
+{
+    $text = trim((string) $text);
     // Convert to lowercase UTF-8 safe
     $text = mb_strtolower($text, 'UTF-8');
     // Replace non letters/digits with hyphens
@@ -285,10 +333,13 @@ function createSlug($text) {
 }
 
 // Get active sliders with safe fallback
-function getActiveSliders() {
+function getActiveSliders()
+{
     try {
         $conn = dbConnect();
-        if (!$conn) { throw new Exception('No DB connection'); }
+        if (!$conn) {
+            throw new Exception('No DB connection');
+        }
         $stmt = $conn->prepare("SELECT id, image, badge, title, subtitle, status, sort_order FROM sliders WHERE status = 1 ORDER BY sort_order ASC, id ASC");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -298,14 +349,16 @@ function getActiveSliders() {
     } catch (Throwable $e) {
         error_log('getActiveSliders fallback: ' . $e->getMessage());
     }
-    return [[
-        'id' => 1,
-        'image' => 'assets/images/about-image.jpg',
-        'badge' => 'Professional Interior Design',
-        'title' => 'Transform Your Space with<br> Living 360 Interiors',
-        'subtitle' => 'We create beautiful, functional spaces that inspire and delight. From residential homes to commercial spaces, we bring your vision to life.',
-        'status' => 1,
-        'sort_order' => 1,
-    ]];
+    return [
+        [
+            'id' => 1,
+            'image' => 'assets/images/about-image.jpg',
+            'badge' => 'Professional Interior Design',
+            'title' => 'Transform Your Space with<br> Living 360 Interiors',
+            'subtitle' => 'We create beautiful, functional spaces that inspire and delight. From residential homes to commercial spaces, we bring your vision to life.',
+            'status' => 1,
+            'sort_order' => 1,
+        ]
+    ];
 }
 ?>

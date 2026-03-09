@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </body>
         </html>";
         // Mail failures should not affect success response
-        @sendEmailNotification($email, $customerSubject, $customerMessage);
+        sendEmailNotification($email, $customerSubject, $customerMessage);
 
         // If this was a non-AJAX submission requesting redirect, send user to contact page
         if (!empty($_POST['redirect'])) {
