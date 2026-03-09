@@ -70,7 +70,7 @@ $error = isset($_GET['error']) ? 'An error occurred while submitting your enquir
                 <div class="alert alert-error"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
 
-            <form class="enquiry-form" id="enquiryForm" method="post" action="/api/enquiry.php"
+            <form class="enquiry-form" id="enquiryForm" method="post" action="api/enquiry.php"
                 onsubmit="return contactSubmit(this);">
                 <input type="hidden" name="redirect" value="1">
 

@@ -1,6 +1,10 @@
 <?php
 require_once '../includes/functions.php';
 
+// Calculate base URL for redirects (handles subdirectory installs like /living360/)
+$scriptDir = dirname(dirname($_SERVER['SCRIPT_NAME']));
+$baseUrl = rtrim($scriptDir, '/') . '/';
+
 // Set header to return JSON
 header('Content-Type: application/json');
 
@@ -20,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = isset($_POST['message']) ? sanitizeInput($_POST['message']) : '';
     $referral = isset($_POST['referral']) ? sanitizeInput($_POST['referral']) : '';
     $newsletter = isset($_POST['newsletter']) ? 1 : 0;
-    
+
     // Validate required fields
     if (empty($name) || empty($email) || empty($project_type) || empty($budget) || empty($timeline)) {
         echo json_encode([
@@ -29,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         exit;
     }
-    
+
     // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode([
@@ -38,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         exit;
     }
-    
+
     // Prepare data for database
     $enquiryData = [
         'name' => $name,
@@ -53,10 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'newsletter' => $newsletter,
         'status' => 'new'
     ];
-    
+
     // Create enquiry in database
     $enquiryId = createEnquiry($enquiryData);
-    
+
     if ($enquiryId) {
         // Send confirmation email to the customer only
         $customerSubject = 'Thank you for your enquiry with Living 360 Interiors';
@@ -99,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // If this was a non-AJAX submission requesting redirect, send user to contact page
         if (!empty($_POST['redirect'])) {
-            header('Location: /pages/contact.php?success=1');
+            header('Location: ' . $baseUrl . 'index.php?page=contact&success=1');
             exit;
         }
 
@@ -111,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // On failure, if redirect requested, send back to contact page with error flag
         if (!empty($_POST['redirect'])) {
             $errFlag = $__debug ? ('&error=' . rawurlencode((string) getLastDbError())) : '';
-            header('Location: /pages/contact.php?error=1' . $errFlag);
+            header('Location: ' . $baseUrl . 'index.php?page=contact&error=1' . $errFlag);
             exit;
         }
 

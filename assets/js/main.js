@@ -2,7 +2,7 @@
 function validateForm(form) {
     var isValid = true;
     var requiredFields = form.querySelectorAll('[required]');
-    requiredFields.forEach(function(field) {
+    requiredFields.forEach(function (field) {
         if (!field.value || !field.value.trim()) {
             field.classList.add('error');
             isValid = false;
@@ -21,24 +21,24 @@ function validateForm(form) {
     return isValid;
 }
 
-$(document).ready(function() {
-    
+$(document).ready(function () {
+
     // ========================================
     // HAMBURGER MENU TOGGLE
     // ========================================
     var $hamburger = $('#hamburgerBtn');
     var $mobileDrawer = $('#mobileNavDrawer');
-    
+
     if ($hamburger.length) {
-        $hamburger.on('click', function() {
+        $hamburger.on('click', function () {
             $(this).toggleClass('active');
             $mobileDrawer.toggleClass('open');
             $('body').toggleClass('nav-open');
             $(this).attr('aria-expanded', $mobileDrawer.hasClass('open'));
         });
-        
+
         // Close drawer when clicking a link
-        $mobileDrawer.find('a').on('click', function() {
+        $mobileDrawer.find('a').on('click', function () {
             $hamburger.removeClass('active');
             $mobileDrawer.removeClass('open');
             $('body').removeClass('nav-open');
@@ -49,11 +49,11 @@ $(document).ready(function() {
     // OFFER MODAL
     // ========================================
     if ($('.offer-modal').length > 0) {
-        setTimeout(function() {
+        setTimeout(function () {
             $('.offer-modal').fadeIn();
         }, 2000);
-        
-        $('.close-modal').click(function() {
+
+        $('.close-modal').click(function () {
             $(this).closest('.modal').fadeOut();
         });
     }
@@ -61,9 +61,9 @@ $(document).ready(function() {
     // ========================================
     // FORM VALIDATION ON SUBMIT
     // ========================================
-    $('form').on('submit', function(e) {
+    $('form').on('submit', function (e) {
         var isValid = true;
-        $(this).find('[required]').each(function() {
+        $(this).find('[required]').each(function () {
             if (!$(this).val() || !$(this).val().trim()) {
                 $(this).addClass('error');
                 isValid = false;
@@ -73,9 +73,9 @@ $(document).ready(function() {
         });
         if (!isValid) { e.preventDefault(); }
     });
-    
+
     // Remove error class on input
-    $('input, textarea, select').on('input change', function() {
+    $('input, textarea, select').on('input change', function () {
         $(this).removeClass('error');
     });
 
@@ -101,12 +101,12 @@ $(document).ready(function() {
         $('.submit-form').hide();
 
         // Next step
-        $('.next-step').click(function() {
+        $('.next-step').click(function () {
             var currentStepElement = $steps.eq(currentStep - 1);
             var requiredFields = currentStepElement.find('[required]');
             var isValid = true;
 
-            requiredFields.each(function() {
+            requiredFields.each(function () {
                 if (($(this).is(':radio') || $(this).is(':checkbox'))) {
                     var name = $(this).attr('name');
                     if (!$('input[name="' + name + '"]:checked').length) {
@@ -138,12 +138,12 @@ $(document).ready(function() {
         });
 
         // Previous step
-        $('.prev-step').click(function() {
+        $('.prev-step').click(function () {
             $steps.eq(currentStep - 1).hide();
             currentStep--;
             $steps.eq(currentStep - 1).show();
             updateProgressBar(currentStep, totalSteps);
-            
+
             $('.next-step').show();
             $('.submit-form').hide();
             if (currentStep === 1) { $('.prev-step').hide(); }
@@ -156,9 +156,11 @@ $(document).ready(function() {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('success') && urlParams.get('success') === '1') {
         $('#successMessage').show();
+        // Hide the entire form container (trust text + form wrapper)
+        $('.contact-form-container').hide();
         $('#formContent').hide();
         $('.enquiry-form').hide();
-        setTimeout(function() {
+        setTimeout(function () {
             $('#successMessage').css('opacity', '1');
         }, 100);
     }
@@ -167,8 +169,8 @@ $(document).ready(function() {
     // SCROLL ANIMATIONS (Intersection Observer)
     // ========================================
     if ('IntersectionObserver' in window) {
-        var animObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
+        var animObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animated');
                     animObserver.unobserve(entry.target);
@@ -176,12 +178,12 @@ $(document).ready(function() {
             });
         }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
 
-        document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+        document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
             animObserver.observe(el);
         });
     } else {
         // Fallback: just show everything
-        document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+        document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
             el.classList.add('animated');
         });
     }
@@ -212,8 +214,8 @@ $(document).ready(function() {
     }
 
     if ('IntersectionObserver' in window) {
-        var counterObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
+        var counterObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     animateCounter(entry.target);
                     counterObserver.unobserve(entry.target);
@@ -221,7 +223,7 @@ $(document).ready(function() {
             });
         }, { threshold: 0.5 });
 
-        document.querySelectorAll('.stat-number[data-count]').forEach(function(el) {
+        document.querySelectorAll('.stat-number[data-count]').forEach(function (el) {
             counterObserver.observe(el);
         });
     }
@@ -230,7 +232,7 @@ $(document).ready(function() {
     // HEADER SCROLL EFFECT
     // ========================================
     var lastScroll = 0;
-    $(window).on('scroll', function() {
+    $(window).on('scroll', function () {
         var scrollTop = $(this).scrollTop();
         if (scrollTop > 100) {
             $('.main-header').addClass('scrolled');
