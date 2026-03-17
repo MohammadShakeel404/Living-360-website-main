@@ -24,7 +24,7 @@
                 <p>At the heart of our work is a deep understanding of how people interact with their environments. Good
                     design goes beyond aesthetics — it's about creating spaces that support and enhance the way you
                     live, work, and play.</p>
-                <a href="index.php?page=contact" class="btn btn-primary">Start Your Project <i
+                <a href="javascript:void(0)" class="btn btn-primary open-popup-enquiry">Start Your Project <i
                         class="fas fa-arrow-right"></i></a>
             </div>
         </div>
@@ -229,7 +229,7 @@
         <div class="cta-content">
             <h2>Let's Create Something Beautiful Together</h2>
             <p>Ready to transform your space? Get started with a free consultation.</p>
-            <a href="index.php?page=contact" class="btn btn-white btn-lg"><i class="fas fa-calendar-check"></i> Book
+            <a href="javascript:void(0)" class="btn btn-white btn-lg open-popup-enquiry"><i class="fas fa-calendar-check"></i> Book
                 Free Consultation</a>
         </div>
     </div>

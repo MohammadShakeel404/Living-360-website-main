@@ -31,7 +31,7 @@
                     </div>
                     <div class="blog-cta-bar">
                         <p><strong>Inspired by this article?</strong> Let\'s bring these ideas to your space.</p>
-                        <a href="index.php?page=contact" class="btn btn-cta">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-cta open-popup-enquiry">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div style="margin-top:24px;">
                         <a href="index.php?page=blogs" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Blog</a>
@@ -71,7 +71,7 @@
         <div class="cta-content">
             <h2>Ready to Transform Your Space?</h2>
             <p>Get expert design advice tailored to your home or office. Start with a free consultation.</p>
-            <a href="index.php?page=contact" class="btn btn-white btn-lg"><i class="fas fa-calendar-check"></i> Book
+            <a href="javascript:void(0)" class="btn btn-white btn-lg open-popup-enquiry"><i class="fas fa-calendar-check"></i> Book
                 Free Consultation</a>
         </div>
     </div>

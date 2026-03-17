@@ -284,13 +284,25 @@
     }
 
     /* Offer modal */
-    .offer-container {
-        flex-direction: column;
+    .offer-container-new {
+        grid-template-columns: 1fr;
     }
 
-    .offer-details {
-        min-width: 100%;
+    .offer-image-side {
+        height: 150px;
+    }
+
+    .offer-details-side {
         padding: 24px;
+    }
+
+    .offer-details-side h2 {
+        font-size: 1.8rem;
+    }
+
+    .offer-cta-group {
+        flex-direction: column;
+        gap: 12px;
     }
 
     /* Footer */
@@ -445,5 +457,85 @@
 
     .radio-group {
         gap: 8px;
+    }
+}
+
+/* ================================================
+   POPUP ENQUIRY MODAL — Responsive
+   ================================================ */
+@media (max-width: 768px) {
+    .popup-enquiry-content {
+        max-width: 100%;
+        border-radius: var(--radius-lg);
+        max-height: 92vh;
+    }
+
+    .popup-form-header {
+        padding: 24px 20px 0;
+    }
+
+    .popup-form-header h2 {
+        font-size: 1.35rem;
+    }
+
+    .popup-trust-badges {
+        gap: 8px;
+    }
+
+    .popup-trust-badges span {
+        font-size: 0.72rem;
+        padding: 3px 8px;
+    }
+
+    .popup-enquiry-form {
+        padding: 12px 20px 24px;
+    }
+
+    .popup-enquiry-form .radio-group {
+        gap: 6px;
+    }
+
+    .popup-enquiry-form .radio-option {
+        padding: 6px 10px;
+        font-size: 0.82rem;
+    }
+
+    .popup-enquiry-form .form-buttons {
+        flex-wrap: wrap;
+    }
+
+    .popup-thankyou {
+        padding: 36px 20px;
+    }
+
+    .thankyou-icon {
+        font-size: 3rem;
+    }
+
+    .popup-thankyou h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .popup-enquiry-modal {
+        padding: 10px;
+    }
+
+    .popup-enquiry-content {
+        border-radius: var(--radius-md);
+    }
+
+    .popup-form-header {
+        padding: 20px 16px 0;
+    }
+
+    .popup-enquiry-form {
+        padding: 10px 16px 20px;
+    }
+
+    .popup-enquiry-form .form-buttons .btn {
+        width: 100%;
+        justify-content: center;
     }
 }

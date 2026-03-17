@@ -3,7 +3,7 @@
         <span class="section-tag">What We Do</span>
         <h1>Our <span class="text-gradient">Design Services</span></h1>
         <p>Comprehensive interior design services to transform any space into something extraordinary.</p>
-        <a href="index.php?page=contact" class="btn btn-cta" style="margin-top:16px;">Get a Free Quote <i
+        <a href="javascript:void(0)" class="btn btn-cta open-popup-enquiry" style="margin-top:16px;">Get a Free Quote <i
                 class="fas fa-arrow-right"></i></a>
     </div>
 </div>
@@ -23,7 +23,7 @@
                             <img src="' . htmlspecialchars($img) . '" alt="' . htmlspecialchars($title) . '">
                             <div class="service-card-overlay">
                                 <button type="button" class="btn btn-white btn-sm view-service-details" data-service-id="' . (int) $service['id'] . '">View Details</button>
-                                <a href="index.php?page=contact" class="btn btn-cta btn-sm">Get Quote</a>
+                                <a href="javascript:void(0)" class="btn btn-cta btn-sm open-popup-enquiry">Get Quote</a>
                             </div>
                         </div>
                         <div class="service-card-body">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="text-center" style="margin-top:32px;">
-            <a href="index.php?page=contact" class="btn btn-cta btn-lg">Discuss Your Project <i
+            <a href="javascript:void(0)" class="btn btn-cta btn-lg open-popup-enquiry">Discuss Your Project <i
                     class="fas fa-arrow-right"></i></a>
         </div>
     </div>
@@ -68,7 +68,7 @@
         <div class="project-description">
           <h2 class="text-gradient">${title}</h2>
           <p>${desc}</p>
-          <div class="project-cta"><a href="index.php?page=contact" class="btn btn-cta">Get a Quote for This Service <i class="fas fa-arrow-right"></i></a></div>
+           <div class="project-cta"><a href="javascript:void(0)" class="btn btn-cta open-popup-enquiry">Get a Quote for This Service <i class="fas fa-arrow-right"></i></a></div>
         </div>
       </div>`;
             sModal.style.display = 'block';
@@ -155,7 +155,7 @@
         <div class="cta-content">
             <h2>Ready to Start Your Project?</h2>
             <p>Contact us today to schedule a free consultation and take the first step toward your dream space.</p>
-            <a href="index.php?page=contact" class="btn btn-white btn-lg"><i class="fas fa-calendar-check"></i> Book
+            <a href="javascript:void(0)" class="btn btn-white btn-lg open-popup-enquiry"><i class="fas fa-calendar-check"></i> Book
                 Free Consultation</a>
         </div>
     </div>

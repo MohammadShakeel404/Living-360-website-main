@@ -46,15 +46,27 @@ $(document).ready(function () {
     }
 
     // ========================================
-    // OFFER MODAL
+    // OFFER MODAL (Show Once Per Visitor)
     // ========================================
     if ($('.offer-modal').length > 0) {
-        setTimeout(function () {
-            $('.offer-modal').fadeIn();
-        }, 2000);
+        // Check if the user has already seen the offer
+        if (!localStorage.getItem('living360_offer_seen')) {
+            setTimeout(function () {
+                $('.offer-modal').css('display', 'flex').hide().fadeIn();
+            }, 2000);
+        }
 
-        $('.close-modal').click(function () {
+        // When closed, mark as seen
+        $('#closeOfferModal').click(function () {
             $(this).closest('.modal').fadeOut();
+            localStorage.setItem('living360_offer_seen', 'true');
+        });
+
+        // Also close on outside click
+        $(window).click(function (e) {
+            if ($(e.target).hasClass('offer-modal')) {
+                $('#closeOfferModal').trigger('click');
+            }
         });
     }
 
@@ -247,3 +259,182 @@ $(document).ready(function () {
 function contactSubmit(form) {
     return validateForm(form);
 }
+
+// ========================================
+// POPUP ENQUIRY MODAL
+// ========================================
+$(document).ready(function () {
+    var $popupModal = $('#popupEnquiryModal');
+    if (!$popupModal.length) {
+        // Fallback: on contact page, redirect clicks to scroll to form
+        $(document).on('click', '.open-popup-enquiry', function (e) {
+            e.preventDefault();
+            window.location.href = 'index.php?page=contact';
+        });
+        return;
+    }
+
+    var $formScreen = $('#popupFormScreen');
+    var $thankyou = $('#popupThankyou');
+    var $form = $('#popupEnquiryForm');
+    var $steps = $form.find('.popup-step');
+    var totalSteps = $steps.length;
+    var currentStep = 1;
+
+    function updatePopupProgress() {
+        var pct = (currentStep / totalSteps) * 100;
+        $('#popupProgressBar').css('width', pct + '%');
+        $('#popupStepLabel').text('Step ' + currentStep + ' of ' + totalSteps);
+    }
+
+    function showStep(step) {
+        $steps.hide();
+        $steps.filter('[data-step="' + step + '"]').show();
+        updatePopupProgress();
+    }
+
+    // Open popup
+    $(document).on('click', '.open-popup-enquiry', function (e) {
+        e.preventDefault();
+        $popupModal.addClass('active');
+        $('body').css('overflow', 'hidden');
+        // Reset to step 1 if form is showing
+        currentStep = 1;
+        showStep(1);
+        $formScreen.show();
+        $thankyou.hide();
+    });
+
+    // Close popup
+    function closePopup() {
+        $popupModal.removeClass('active');
+        $('body').css('overflow', '');
+    }
+
+    $('#closePopupEnquiry').on('click', closePopup);
+
+    $popupModal.on('click', function (e) {
+        if ($(e.target).hasClass('popup-enquiry-modal')) closePopup();
+    });
+
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape' && $popupModal.hasClass('active')) closePopup();
+    });
+
+    // Next step
+    $form.on('click', '.popup-next-step', function () {
+        var $currentStep = $steps.filter('[data-step="' + currentStep + '"]');
+        var valid = true;
+
+        // Validate required fields in current step
+        $currentStep.find('[required]').each(function () {
+            if ($(this).is(':radio') || $(this).is(':checkbox')) {
+                var name = $(this).attr('name');
+                if (!$form.find('input[name="' + name + '"]:checked').length) {
+                    valid = false;
+                }
+            } else if (!$(this).val() || !$(this).val().trim()) {
+                $(this).addClass('error');
+                valid = false;
+            } else {
+                $(this).removeClass('error');
+            }
+        });
+
+        if (valid && currentStep < totalSteps) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    // Previous step
+    $form.on('click', '.popup-prev-step', function () {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+
+    // Remove error on input
+    $form.on('input change', 'input, textarea, select', function () {
+        $(this).removeClass('error');
+    });
+
+    // Form submit via AJAX
+    $form.on('submit', function (e) {
+        e.preventDefault();
+
+        // Validate last step
+        var $lastStep = $steps.filter('[data-step="' + totalSteps + '"]');
+        var valid = true;
+
+        $lastStep.find('[required]').each(function () {
+            if (!$(this).val() || !$(this).val().trim()) {
+                $(this).addClass('error');
+                valid = false;
+            } else {
+                $(this).removeClass('error');
+            }
+
+            // Email validation
+            if ($(this).attr('type') === 'email' && $(this).val()) {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test($(this).val())) {
+                    $(this).addClass('error');
+                    valid = false;
+                }
+            }
+        });
+
+        if (!valid) return;
+
+        var $submitBtn = $form.find('.popup-submit-btn');
+        $submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Submitting...');
+
+        // Map popup field names to API field names
+        var formData = {
+            name: $form.find('[name="popup_name"]').val(),
+            email: $form.find('[name="popup_email"]').val(),
+            phone: $form.find('[name="popup_phone"]').val(),
+            project_type: $form.find('[name="popup_project_type"]:checked').val() || '',
+            space_size: $form.find('[name="popup_space_size"]').val() || '',
+            budget: $form.find('[name="popup_budget"]:checked').val() || '',
+            timeline: $form.find('[name="popup_timeline"]:checked').val() || '',
+            message: $form.find('[name="popup_message"]').val() || '',
+            referral: $form.find('[name="popup_referral"]').val() || '',
+            newsletter: $form.find('[name="popup_newsletter"]').is(':checked') ? 1 : 0
+        };
+
+        $.ajax({
+            url: 'api/enquiry.php',
+            method: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function (resp) {
+                if (resp && resp.success) {
+                    // Show thank you
+                    $formScreen.hide();
+                    $thankyou.show();
+                    $form[0].reset();
+                    currentStep = 1;
+                } else {
+                    alert(resp.message || 'Something went wrong. Please try again.');
+                    $submitBtn.prop('disabled', false).html('Submit Enquiry <i class="fas fa-paper-plane"></i>');
+                }
+            },
+            error: function () {
+                alert('Network error. Please check your connection and try again.');
+                $submitBtn.prop('disabled', false).html('Submit Enquiry <i class="fas fa-paper-plane"></i>');
+            }
+        });
+    });
+
+    // Submit another
+    $('#popupSubmitAnother').on('click', function () {
+        $thankyou.hide();
+        $formScreen.show();
+        currentStep = 1;
+        showStep(1);
+        $form.find('.popup-submit-btn').prop('disabled', false).html('Submit Enquiry <i class="fas fa-paper-plane"></i>');
+    });
+});

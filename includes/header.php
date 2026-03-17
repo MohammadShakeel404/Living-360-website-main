@@ -2,7 +2,7 @@
     <!-- Announcement Bar -->
     <div class="announcement-bar">
         <div class="container">
-            <p><i class="fas fa-bolt"></i> <strong>Limited Offer:</strong> Book a free consultation this month &amp; get 10% off your first project! <a href="index.php?page=contact">Claim Now &rarr;</a></p>
+            <p><i class="fas fa-bolt"></i> <strong>Limited Offer:</strong> Book a free consultation this month &amp; get 10% off your first project! <a href="javascript:void(0)" class="open-popup-enquiry">Claim Now &rarr;</a></p>
         </div>
     </div>
     <div class="header-main">
@@ -36,7 +36,7 @@
                     <i class="fas fa-phone"></i>
                     <span><?php echo htmlspecialchars($phone); ?></span>
                 </a>
-                <a href="index.php?page=contact" class="btn btn-cta desktop" aria-label="Get free consultation">Get Free Quote</a>
+                <a href="javascript:void(0)" class="btn btn-cta desktop open-popup-enquiry" aria-label="Get free consultation">Get Free Quote</a>
 
                 <!-- Mobile hamburger -->
                 <button class="hamburger mobile" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
@@ -59,7 +59,7 @@
         <div class="mobile-nav-contact">
             <a href="<?php echo $telHref; ?>" class="btn btn-outline"><i class="fas fa-phone"></i> <?php echo htmlspecialchars($phone); ?></a>
             <a href="<?php echo $mailHref; ?>" class="btn btn-outline"><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($email); ?></a>
-            <a href="index.php?page=contact" class="btn btn-cta">Get Free Consultation</a>
+            <a href="javascript:void(0)" class="btn btn-cta open-popup-enquiry">Get Free Consultation</a>
         </div>
     </div>
 </header>

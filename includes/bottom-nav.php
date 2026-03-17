@@ -7,10 +7,17 @@
         <i class="fas fa-concierge-bell" aria-hidden="true"></i>
         <span>Services</span>
     </a>
-    <a href="index.php?page=contact" class="bottom-item cta-item <?php echo $page == 'contact' ? 'active' : ''; ?>" aria-label="Get Quote">
+    <?php if ($page !== 'contact'): ?>
+    <a href="javascript:void(0)" class="bottom-item cta-item open-popup-enquiry" aria-label="Get Quote">
         <i class="fas fa-comment-dots" aria-hidden="true"></i>
         <span>Get Quote</span>
     </a>
+    <?php else: ?>
+    <a href="index.php?page=contact" class="bottom-item cta-item active" aria-label="Get Quote">
+        <i class="fas fa-comment-dots" aria-hidden="true"></i>
+        <span>Get Quote</span>
+    </a>
+    <?php endif; ?>
     <a href="index.php?page=projects" class="bottom-item <?php echo $page == 'projects' ? 'active' : ''; ?>" aria-label="Projects">
         <i class="fas fa-drafting-compass" aria-hidden="true"></i>
         <span>Projects</span>

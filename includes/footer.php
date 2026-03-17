@@ -7,7 +7,7 @@
                     <h2>Ready to Transform Your Space?</h2>
                     <p>Book a free consultation today and let's bring your vision to life.</p>
                 </div>
-                <a href="index.php?page=contact" class="btn btn-cta btn-lg">Book Free Consultation <i
+                <a href="javascript:void(0)" class="btn btn-cta btn-lg open-popup-enquiry">Book Free Consultation <i
                         class="fas fa-arrow-right"></i></a>
             </div>
         </div>

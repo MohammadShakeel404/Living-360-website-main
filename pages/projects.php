@@ -72,7 +72,7 @@
                                 </div>
                                 <p><?php echo $project['description']; ?></p>
                                 <div class="project-cta">
-                                    <a href="index.php?page=contact" class="btn btn-cta">Start a Similar Project <i
+                                    <a href="javascript:void(0)" class="btn btn-cta open-popup-enquiry">Start a Similar Project <i
                                             class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
         <div class="cta-content">
             <h2>Love What You See?</h2>
             <p>Let's create something amazing for your space. Start with a free consultation.</p>
-            <a href="index.php?page=contact" class="btn btn-white btn-lg"><i class="fas fa-calendar-check"></i> Book
+            <a href="javascript:void(0)" class="btn btn-white btn-lg open-popup-enquiry"><i class="fas fa-calendar-check"></i> Book
                 Free Consultation</a>
         </div>
     </div>

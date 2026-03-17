@@ -25,7 +25,7 @@
                             <?php if ($subtitle) { ?>
                                 <p><?php echo $subtitle; ?></p><?php } ?>
                             <div class="hero-buttons">
-                                <a href="index.php?page=contact" class="btn btn-cta btn-lg"><i
+                                <a href="javascript:void(0)" class="btn btn-cta btn-lg open-popup-enquiry"><i
                                         class="fas fa-calendar-check"></i> Book Free Consultation</a>
                                 <a href="index.php?page=projects" class="btn btn-white btn-lg"><i class="fas fa-images"></i>
                                     View Our Work</a>
@@ -134,7 +134,7 @@
                         <div class="service-card-image">
                             <img src="' . htmlspecialchars($img) . '" alt="' . htmlspecialchars($title) . '">
                             <div class="service-card-overlay">
-                                <a href="index.php?page=contact" class="btn btn-cta btn-sm">Get Quote</a>
+                                <a href="javascript:void(0)" class="btn btn-cta btn-sm open-popup-enquiry">Get Quote</a>
                             </div>
                         </div>
                         <div class="service-card-body">
@@ -192,7 +192,7 @@
             </div>
         </div>
         <div class="text-center" style="margin-top:32px;">
-            <a href="index.php?page=contact" class="btn btn-cta btn-lg">Start Your Journey Today <i
+            <a href="javascript:void(0)" class="btn btn-cta btn-lg open-popup-enquiry">Start Your Journey Today <i
                     class="fas fa-arrow-right"></i></a>
         </div>
     </div>
@@ -366,7 +366,7 @@
             <h2>Ready to Transform Your Space?</h2>
             <p>Get a free consultation and personalized design proposal. No obligation, no hidden fees.</p>
             <div class="cta-buttons">
-                <a href="index.php?page=contact" class="btn btn-white btn-lg"><i class="fas fa-calendar-check"></i> Book
+                <a href="javascript:void(0)" class="btn btn-white btn-lg open-popup-enquiry"><i class="fas fa-calendar-check"></i> Book
                     Free Consultation</a>
                 <a href="tel:+919845061004" class="btn btn-outline-white btn-lg"><i class="fas fa-phone"></i> Call
                     Now</a>
